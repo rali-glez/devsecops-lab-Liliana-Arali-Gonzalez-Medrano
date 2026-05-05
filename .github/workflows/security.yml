@@ -35,6 +35,7 @@ jobs:
                   --json \
                   --output=semgrep-results.json \
                   Unidad_3_Seguridad_en_Aplicaciones_y_Datos/devsecops-lab/app/
+          # Segunda ejecución para salida legible en consola
           semgrep --config p/python \
                   --config p/owasp-top-ten \
                   --config p/secrets \
@@ -47,7 +48,6 @@ jobs:
         with:
           name: semgrep-results
           path: semgrep-results.json
-
 
   sca:
     name: SCA - pip-audit
@@ -78,7 +78,6 @@ jobs:
         with:
           name: pip-audit-report
           path: audit-report.json
-
 
   tests:
     name: Tests - pytest
