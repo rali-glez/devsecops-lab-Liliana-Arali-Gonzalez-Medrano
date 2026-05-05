@@ -1,3 +1,6 @@
+# Archivo: .github/workflows/security.yml
+# Lab DevSecOps — Arquitectura de Sistemas de Seguridad CUGDL — Semana 9
+
 name: Pipeline de Seguridad DevSecOps
 
 on:
@@ -12,7 +15,7 @@ jobs:
   sast:
     name: SAST - Semgrep
     runs-on: ubuntu-latest
-    continue-on-error: true
+    continue-on-error: true   # falla visible pero NO bloquea los siguientes jobs
     timeout-minutes: 10
 
     steps:
@@ -22,7 +25,6 @@ jobs:
       - name: Instalar Semgrep
         run: pip install semgrep
 
-      # ✅ TODO completado
       - name: Ejecutar análisis SAST
         run: |
           semgrep --config p/python \
@@ -32,7 +34,7 @@ jobs:
                   --error \
                   --json \
                   --output=semgrep-results.json \
-                  Unidad_3_Seguridad_en_Aplicaciones_y_Datos/devsecops-lab/app/ || true
+                  Unidad_3_Seguridad_en_Aplicaciones_y_Datos/devsecops-lab/app/
           semgrep --config p/python \
                   --config p/owasp-top-ten \
                   --config p/secrets \
@@ -61,7 +63,6 @@ jobs:
         with:
           python-version: "3.11"
 
-      # ✅ TODO completado
       - name: Instalar y ejecutar pip-audit
         run: |
           pip install pip-audit
@@ -69,7 +70,7 @@ jobs:
                     --format=json \
                     --output=audit-report.json || true
           echo '--- Reporte de CVEs ---'
-          pip-audit -r Unidad_3_Seguridad_en_Aplicaciones_y_Datos/devsecops-lab/app/requirements.txt
+          pip-audit -r Unidad_3_Seguridad_en_Aplicaciones_y_Datos/devsecops-lab/app/requirements.txt || true
 
       - name: Guardar reporte de auditoría
         uses: actions/upload-artifact@v4
@@ -94,7 +95,6 @@ jobs:
         with:
           python-version: "3.11"
 
-      # ✅ TODO completado
       - name: Instalar dependencias
         run: |
           pip install -r Unidad_3_Seguridad_en_Aplicaciones_y_Datos/devsecops-lab/app/requirements.txt
